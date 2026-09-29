@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pre-order {{ product.name }} | Boski</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container navbar">
+
+            <a href="/" class="logo">
+                BOS<span>KI</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/">Home</a>
+
+                <a
+                    href="https://wa.me/233242935172"
+                    class="whatsapp-btn"
+                    target="_blank"
+                >
+                    WhatsApp Us
+                </a>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-heading">
+                <h2>Pre-order Product</h2>
+
+                <p>
+                    Enter your details below to continue with your order.
+                </p>
+            </div>
+
+
+            <div class="payment-box">
+
+                <h3>{{ product.name }}</h3>
+
+                <p class="product-price">
+                    GH₵{{ product.price }}
+                </p>
+
+            </div>
+
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Continue to WhatsApp
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <div>
+                <h2>BOSKI</h2>
+
+                <p>
+                    Your Global Shopping Partner.
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    WhatsApp: +233 242 935 172
+                </p>
+
+                <p>
+                    © 2026 Boski. All rights reserved.
+                </p>
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>

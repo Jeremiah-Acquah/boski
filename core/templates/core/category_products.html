@@ -1,0 +1,180 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+{{ category.name }} | Boski
+{% endblock %}
+
+{% block content %}
+
+<!-- CATEGORY HERO -->
+
+<section class="products-hero">
+
+    <div class="container">
+
+        <div class="products-hero-content">
+
+            <span class="products-tag">
+                BOSKI CATEGORY
+            </span>
+
+            <h1>
+                {{ category.name }}
+            </h1>
+
+            <p>
+                Browse {{ category.name|lower }} available through Boski.
+                We source quality products from China and bring them to Ghana.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CATEGORY PRODUCTS -->
+
+<section class="section products-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <h2>
+                {{ category.name }}
+            </h2>
+
+            <p>
+                Explore available {{ category.name|lower }}.
+            </p>
+
+        </div>
+
+
+        <div class="product-grid">
+
+            {% for product in products %}
+
+                <article class="product-card">
+
+                    <div class="product-image-wrapper">
+
+                        {% if product.image %}
+
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                                class="product-image"
+                            >
+
+                        {% else %}
+
+                            <div class="product-image-placeholder">
+                                No Image Available
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <span class="product-category">
+                            {{ category.name }}
+                        </span>
+
+                        <h3>
+                            {{ product.name }}
+                        </h3>
+
+
+                        {% if product.description %}
+
+                            <p class="product-description">
+                                {{ product.description|truncatewords:18 }}
+                            </p>
+
+                        {% endif %}
+
+
+                        <div class="product-bottom">
+
+                            <span class="product-price">
+                                GH₵ {{ product.price }}
+                            </span>
+
+                            <a
+                                href="{% url 'product_detail' product.id %}"
+                                class="product-btn"
+                            >
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="no-products">
+
+                    <h3>
+                        No products available
+                    </h3>
+
+                    <p>
+                        There are currently no products in this category.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WHATSAPP CTA -->
+
+<section class="products-cta">
+
+    <div class="container">
+
+        <div class="products-cta-content">
+
+            <div>
+
+                <span>
+                    Looking for something specific?
+                </span>
+
+                <h2>
+                    Let Boski source it for you.
+                </h2>
+
+            </div>
+
+
+            <a
+                href="https://wa.me/233242935172"
+                class="btn btn-primary"
+                target="_blank"
+            >
+                Chat With Boski
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

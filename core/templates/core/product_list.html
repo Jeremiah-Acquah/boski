@@ -1,0 +1,243 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Products | Boski
+{% endblock %}
+
+{% block content %}
+
+<!-- PRODUCTS HERO -->
+
+<section class="products-hero">
+
+    <div class="container">
+
+        <div class="products-hero-content">
+
+            <span class="products-tag">
+                BOSKI CATALOGUE
+            </span>
+
+            {% if query %}
+                <h1>Search Results</h1>
+                <p>
+                    Showing products matching
+                    <strong>"{{ query }}"</strong>.
+                </p>
+            {% else %}
+                <h1>Explore Our Products</h1>
+                <p>
+                    Browse products sourced through Boski and
+                    available for pre-order in Ghana.
+                </p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<section class="products-search-section">
+
+    <div class="container">
+
+        <form method="GET" class="catalogue-search-form">
+
+            <div class="search-input-wrapper">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search products..."
+                    value="{{ query }}"
+                >
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            {% if query %}
+                <a
+                    href="{% url 'product_list' %}"
+                    class="clear-search"
+                >
+                    Clear
+                </a>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- PRODUCT CATALOGUE -->
+
+<section class="section products-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            {% if query %}
+                <h2>Results for "{{ query }}"</h2>
+                <p>
+                    Explore the products matching your search.
+                </p>
+            {% else %}
+                <h2>All Products</h2>
+                <p>
+                    Browse everything currently available through Boski.
+                </p>
+            {% endif %}
+
+        </div>
+
+
+        {% if products %}
+
+            <div class="product-grid">
+
+                {% for product in products %}
+
+                    <article class="product-card">
+
+                        <div class="product-image-wrapper">
+
+                            {% if product.image %}
+
+                                <img
+                                    src="{{ product.image.url }}"
+                                    alt="{{ product.name }}"
+                                    class="product-image"
+                                >
+
+                            {% else %}
+
+                                <div class="product-image-placeholder">
+                                    No Image Available
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="product-info">
+
+                            {% if product.category %}
+                                <span class="product-category">
+                                    {{ product.category.name }}
+                                </span>
+                            {% endif %}
+
+                            <h3>
+                                {{ product.name }}
+                            </h3>
+
+                            {% if product.description %}
+                                <p class="product-description">
+                                    {{ product.description|truncatewords:18 }}
+                                </p>
+                            {% endif %}
+
+                            <div class="product-bottom">
+
+                                <span class="product-price">
+                                    GH₵ {{ product.price|floatformat:2 }}
+                                </span>
+
+                                <a
+                                    href="{% url 'product_detail' product.id %}"
+                                    class="product-btn"
+                                >
+                                    View Details
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="no-products">
+
+                <h3>No Products Found</h3>
+
+                {% if query %}
+
+                    <p>
+                        We couldn't find a product matching
+                        "{{ query }}".
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        There are currently no products available.
+                    </p>
+
+                {% endif %}
+
+                <a
+                    href="{% url 'product_list' %}"
+                    class="btn btn-primary"
+                >
+                    View All Products
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- CALL TO ACTION -->
+
+<section class="products-cta">
+
+    <div class="container">
+
+        <div class="products-cta-content">
+
+            <div>
+                <span>CAN'T FIND WHAT YOU NEED?</span>
+
+                <h2>
+                    Let Boski source it for you.
+                </h2>
+            </div>
+
+            <a
+                href="https://wa.me/233242935172"
+                class="btn btn-primary"
+                target="_blank"
+            >
+                Chat With Boski
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

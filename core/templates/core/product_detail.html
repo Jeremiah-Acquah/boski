@@ -1,0 +1,399 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+{{ product.name }} | Boski
+{% endblock %}
+
+{% block content %}
+
+<section class="section product-detail-section">
+
+    <div class="container">
+
+        <a href="{% url 'product_list' %}" class="back-products">
+            ← Back to Products
+        </a>
+
+        <div class="product-detail">
+
+            <!-- PRODUCT IMAGE -->
+
+            <div class="product-detail-image">
+
+                {% if product.image %}
+
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="product-image-placeholder">
+                        No Image Available
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PRODUCT INFORMATION -->
+
+            <div class="product-detail-info">
+
+                <span class="product-category">
+                    {{ product.category.name }}
+                </span>
+
+                <h1>
+                    {{ product.name }}
+                </h1>
+
+                <div class="product-detail-price">
+                    GH₵{{ product.price|floatformat:2 }}
+                </div>
+
+
+                {% if product.description %}
+
+                    <p class="product-detail-description">
+                        {{ product.description }}
+                    </p>
+
+                {% endif %}
+
+
+                <!-- QUANTITY -->
+
+                <div class="quantity-box">
+
+                    <label for="quantity">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                    >
+
+                </div>
+
+
+                <!-- PAYMENT OPTIONS -->
+
+                <div class="payment-box">
+
+                    <h3>
+                        Choose Payment Option
+                    </h3>
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment_option"
+                            value="80% Deposit"
+                            checked
+                        >
+
+                        <span>
+                            <strong>80% Deposit</strong>
+                            <small id="deposit-amount">
+                                GH₵{{ deposit_amount|floatformat:2 }}
+                            </small>
+                        </span>
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment_option"
+                            value="100% Full Payment"
+                        >
+
+                        <span>
+                            <strong>100% Full Payment</strong>
+                            <small id="full-payment-amount">
+                                GH₵{{ product.price|floatformat:2 }}
+                            </small>
+                        </span>
+
+                    </label>
+
+
+                    <p class="payment-link">
+                        Need payment details?
+
+                        <a href="{% url 'payment' %}">
+                            View Payment Methods
+                        </a>
+                    </p>
+
+                </div>
+
+
+                <!-- PRE-ORDER -->
+
+                <div class="payment-box preorder-box">
+
+                    <h3>
+                        Pre-order with Boski
+                    </h3>
+
+                    <p>
+                        Select your quantity and payment option,
+                        then continue with Boski on WhatsApp.
+                    </p>
+
+                    <ul>
+                        <li>80% deposit available</li>
+                        <li>100% full payment available</li>
+                        <li>WhatsApp confirmation</li>
+                    </ul>
+
+                </div>
+
+
+                <a
+                    href="#"
+                    class="btn btn-primary preorder-button"
+                    id="whatsapp-order"
+                >
+                    Pre-order on WhatsApp
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+    const quantityInput =
+        document.getElementById("quantity");
+
+    const whatsappButton =
+        document.getElementById("whatsapp-order");
+
+    const depositAmountElement =
+        document.getElementById("deposit-amount");
+
+    const fullPaymentAmountElement =
+        document.getElementById("full-payment-amount");
+
+
+    const unitPrice =
+        parseFloat("{{ product.price }}");
+
+
+    function updatePaymentAmounts() {
+
+        const quantity =
+            parseInt(quantityInput.value) || 1;
+
+        const totalPrice =
+            unitPrice * quantity;
+
+        const depositAmount =
+            totalPrice * 0.80;
+
+
+        depositAmountElement.textContent =
+            "GH₵" + depositAmount.toFixed(2);
+
+        fullPaymentAmountElement.textContent =
+            "GH₵" + totalPrice.toFixed(2);
+    }
+
+
+    quantityInput.addEventListener(
+        "input",
+        updatePaymentAmounts
+    );
+
+
+    updatePaymentAmounts();
+
+
+    whatsappButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const quantity =
+                parseInt(quantityInput.value);
+
+
+            if (quantity < 1) {
+
+                alert(
+                    "Please enter a valid quantity."
+                );
+
+                return;
+            }
+
+
+            const paymentRadio =
+                document.querySelector(
+                    'input[name="payment_option"]:checked'
+                );
+
+
+            const paymentOption =
+                paymentRadio.value;
+
+
+            let paymentCode;
+
+
+            if (paymentOption === "80% Deposit") {
+
+                paymentCode = "deposit";
+
+            } else {
+
+                paymentCode = "full";
+            }
+
+
+            const price =
+                parseFloat("{{ product.price }}");
+
+
+            const totalPrice =
+                price * quantity;
+
+
+            let paymentAmount;
+
+
+            if (paymentCode === "deposit") {
+
+                paymentAmount =
+                    totalPrice * 0.80;
+
+            } else {
+
+                paymentAmount =
+                    totalPrice;
+            }
+
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "quantity",
+                quantity
+            );
+
+
+            formData.append(
+                "payment_option",
+                paymentCode
+            );
+
+
+            fetch(
+                "{% url 'create_order' product.id %}",
+                {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken":
+                            "{{ csrf_token }}"
+                    }
+                }
+            )
+
+            .then(response =>
+                response.json()
+            )
+
+            .then(data => {
+
+                if (!data.success) {
+
+                    alert(
+                        data.error ||
+                        "Something went wrong."
+                    );
+
+                    return;
+                }
+
+
+                const message =
+                    "Hello Boski, I want to pre-order:\n\n" +
+
+                    "Order Number: " +
+                    data.order_number +
+
+                    "\nProduct: " +
+                    "{{ product.name }}" +
+
+                    "\nQuantity: " +
+                    quantity +
+
+                    "\nPrice per unit: GH₵" +
+                    price.toFixed(2) +
+
+                    "\nTotal Price: GH₵" +
+                    totalPrice.toFixed(2) +
+
+                    "\nPayment: " +
+                    paymentOption +
+
+                    "\nAmount to Pay: GH₵" +
+                    paymentAmount.toFixed(2) +
+
+                    "\n\nPlease send me the payment details.";
+
+
+                const whatsappUrl =
+                    "https://wa.me/233242935172?text=" +
+                    encodeURIComponent(message);
+
+
+                window.open(
+                    whatsappUrl,
+                    "_blank"
+                );
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                alert(
+                    "Unable to create the order. Please try again."
+                );
+
+            });
+
+        }
+    );
+
+</script>
+
+{% endblock %}

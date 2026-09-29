@@ -1,0 +1,383 @@
+{% extends "core/base.html" %}
+
+{% block title %}Boski Dashboard{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="container">
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+
+            <div>
+                <span class="dashboard-eyebrow">
+                    BOSKI ADMIN
+                </span>
+
+                <h1>Dashboard</h1>
+
+                <p>
+                    Overview of your store, orders and customers.
+                </p>
+            </div>
+
+            <a href="/admin/" class="dashboard-admin-btn">
+                Open Admin Panel
+            </a>
+
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="dashboard-stats">
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Total Products
+                </span>
+
+                <strong>
+                    {{ total_products }}
+                </strong>
+            </div>
+
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Total Customers
+                </span>
+
+                <strong>
+                    {{ total_customers }}
+                </strong>
+            </div>
+
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Total Orders
+                </span>
+
+                <strong>
+                    {{ total_orders }}
+                </strong>
+            </div>
+
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Pending Orders
+                </span>
+
+                <strong class="stat-orange">
+                    {{ pending_orders }}
+                </strong>
+            </div>
+
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Completed Orders
+                </span>
+
+                <strong class="stat-green">
+                    {{ completed_orders }}
+                </strong>
+            </div>
+
+
+            <div class="dashboard-stat">
+                <span class="dashboard-stat-label">
+                    Recorded Sales
+                </span>
+
+                <strong>
+                    GH₵{{ total_sales|floatformat:2 }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- Recent Orders -->
+        <div class="dashboard-panel">
+
+            <div class="dashboard-panel-header">
+
+                <div>
+                    <span class="dashboard-panel-eyebrow">
+                        ORDERS
+                    </span>
+
+                    <h2>Recent Orders</h2>
+                </div>
+
+                <a href="/admin/orders/order/" class="dashboard-view-link">
+                    View All →
+                </a>
+
+            </div>
+
+
+            {% if recent_orders %}
+
+                <div class="dashboard-table-wrapper">
+
+                    <table class="dashboard-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Order</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for order in recent_orders %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            {{ order.order_number }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        GH₵{{ order.total_price|floatformat:2 }}
+                                    </td>
+
+                                    <td>
+                                        {{ order.get_payment_option_display }}
+                                    </td>
+
+                                    <td>
+                                        <span class="order-status">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {{ order.created_at|date:"M d, Y" }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="dashboard-empty">
+
+                    <strong>No orders yet</strong>
+
+                    <p>
+                        New customer orders will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Recent Customers -->
+        <div class="dashboard-panel">
+
+            <div class="dashboard-panel-header">
+
+                <div>
+                    <span class="dashboard-panel-eyebrow">
+                        CUSTOMERS
+                    </span>
+
+                    <h2>Recent Customers</h2>
+
+                    <p>
+                        Latest customers who placed orders.
+                    </p>
+                </div>
+
+            </div>
+
+
+            {% if recent_customers %}
+
+                <div class="dashboard-table-wrapper">
+
+                    <table class="dashboard-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Date</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for customer in recent_customers %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            {{ customer.name|default:"WhatsApp Customer" }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ customer.phone|default:"Not provided" }}
+                                    </td>
+
+                                    <td>
+                                        {{ customer.email|default:"Not provided" }}
+                                    </td>
+
+                                    <td>
+                                        {{ customer.created_at|date:"M d, Y" }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="dashboard-empty">
+
+                    <strong>No customers yet</strong>
+
+                    <p>
+                        Customer information will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Quick Actions -->
+        <div class="dashboard-panel">
+
+            <div class="dashboard-panel-header">
+
+                <div>
+                    <span class="dashboard-panel-eyebrow">
+                        MANAGEMENT
+                    </span>
+
+                    <h2>Quick Actions</h2>
+
+                    <p>
+                        Manage your Boski store.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+                <a
+                    href="/admin/store/product/add/"
+                    class="quick-action"
+                >
+                    <span class="quick-action-icon">+</span>
+
+                    <div>
+                        <strong>Add Product</strong>
+                        <span>Add a new product</span>
+                    </div>
+                </a>
+
+
+                <a
+                    href="/admin/store/product/"
+                    class="quick-action"
+                >
+                    <span class="quick-action-icon">▣</span>
+
+                    <div>
+                        <strong>Manage Products</strong>
+                        <span>View and edit products</span>
+                    </div>
+                </a>
+
+
+                <a
+                    href="/admin/orders/order/"
+                    class="quick-action"
+                >
+                    <span class="quick-action-icon">↗</span>
+
+                    <div>
+                        <strong>Manage Orders</strong>
+                        <span>View customer orders</span>
+                    </div>
+                </a>
+
+
+                <a
+                    href="/admin/store/category/"
+                    class="quick-action"
+                >
+                    <span class="quick-action-icon">☷</span>
+
+                    <div>
+                        <strong>Manage Categories</strong>
+                        <span>Organize your catalogue</span>
+                    </div>
+                </a>
+
+
+                <a
+                    href="/admin/"
+                    class="quick-action"
+                >
+                    <span class="quick-action-icon">⚙</span>
+
+                    <div>
+                        <strong>Admin Panel</strong>
+                        <span>Open Django Admin</span>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

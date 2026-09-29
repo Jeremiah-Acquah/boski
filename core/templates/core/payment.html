@@ -1,0 +1,135 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Payment | Boski
+{% endblock %}
+
+{% block content %}
+
+
+<section class="section payment-page">
+
+    <div class="container">
+
+        <div class="section-heading">
+            <h2>Payment Options</h2>
+            <p>
+                Choose how you would like to pay for your Boski order.
+            </p>
+        </div>
+
+
+        <div class="payment-page-grid">
+
+            <!-- MOBILE MONEY -->
+            <div class="payment-method-card">
+
+                <div class="payment-method-icon">
+                    📱
+                </div>
+
+                <h3>Mobile Money</h3>
+
+                <p>
+                    Make your payment conveniently through Mobile Money.
+                </p>
+
+                <div class="payment-detail">
+                    <span>Mobile Money Number</span>
+                    <strong>0242935172</strong>
+                </div>
+
+                <div class="payment-detail">
+                    <span>Momo Name</span>
+                    <strong>Benjamin Baiden-Fletcher</strong>
+                </div>
+
+                <div class="payment-detail">
+                    <span>Network</span>
+                    <strong>MTN</strong>
+                </div>
+
+            </div>
+
+
+            <!-- BANK TRANSFER -->
+            <div class="payment-method-card">
+
+                <div class="payment-method-icon">
+                    🏦
+                </div>
+
+                <h3>Bank Transfer</h3>
+
+                <p>
+                    Transfer your payment directly to the Boski bank account.
+                </p>
+
+                <div class="payment-detail">
+                    <span>Bank</span>
+                    <strong>Ecobank</strong>
+                </div>
+
+                <div class="payment-detail">
+                    <span>Account Number</span>
+                    <strong>1441000969426</strong>
+                </div>
+
+                <div class="payment-detail">
+                    <span>Account Name</span>
+                    <strong>BENJAMIN BAIDEN-FLETCHER</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT INFORMATION -->
+        <div class="payment-note">
+
+            <span class="payment-note-tag">
+                PAYMENT INFORMATION
+            </span>
+
+            <h3>Choose Your Payment Amount</h3>
+
+            <p>
+                When placing an order, you can choose between:
+            </p>
+
+            <div class="payment-choice-list">
+
+                <div>
+                    <strong>80% Deposit</strong>
+                    <span>Pay 80% of the total order amount.</span>
+                </div>
+
+                <div>
+                    <strong>100% Full Payment</strong>
+                    <span>Pay the full order amount upfront.</span>
+                </div>
+
+            </div>
+
+            <p class="payment-confirmation">
+                After making your payment, please send your payment
+                confirmation to Boski on WhatsApp.
+            </p>
+
+            <a
+                href="https://wa.me/233242935172"
+                class="btn btn-primary"
+                target="_blank">
+                Send Payment Confirmation
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{% endblock %}

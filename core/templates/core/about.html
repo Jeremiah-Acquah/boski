@@ -1,0 +1,150 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+About Boski | Your Global Shopping Partner
+{% endblock %}
+
+{% block content %}
+
+<!-- ABOUT HERO -->
+
+<section class="about-hero">
+
+    <div class="container">
+
+        <div class="about-hero-content">
+
+            <span class="products-tag">
+                ABOUT BOSKI
+            </span>
+
+            <h1>
+                Your Global
+                <span>Shopping Partner.</span>
+            </h1>
+
+            <p>
+                We help customers in Ghana source quality products
+                from international markets and bring them closer to home.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT CONTENT -->
+
+<section class="section about-section">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+            <div class="about-card">
+
+                <span class="about-card-number">
+                    01
+                </span>
+
+                <h2>
+                    Who We Are
+                </h2>
+
+                <p>
+                    Boski helps customers in Ghana source products
+                    internationally and bring them closer to home.
+                    From vehicles and tricycles to electronics and
+                    everyday products, we make international sourcing
+                    simpler.
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <span class="about-card-number">
+                    02
+                </span>
+
+                <h2>
+                    How We Work
+                </h2>
+
+                <p>
+                    Browse our products, choose what you want,
+                    select your preferred payment option, and
+                    contact us through WhatsApp to place your
+                    pre-order.
+                </p>
+
+            </div>
+
+
+            <div class="about-card about-card-wide">
+
+                <span class="about-card-number">
+                    03
+                </span>
+
+                <h2>
+                    Our Focus
+                </h2>
+
+                <p>
+                    Boski is particularly focused on sourcing
+                    vehicles, tricycles and other products from
+                    international markets and making them accessible
+                    to customers in Ghana.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CTA -->
+
+        <div class="about-cta">
+
+            <div>
+
+                <span>
+                    READY TO SHOP?
+                </span>
+
+                <h2>
+                    Find what you're looking for.
+                </h2>
+
+            </div>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{% url 'product_list' %}"
+                    class="btn btn-primary"
+                >
+                    Browse Products
+                </a>
+
+                <a
+                    href="https://wa.me/233242935172"
+                    class="btn btn-secondary"
+                    target="_blank"
+                >
+                    Chat With Boski
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
